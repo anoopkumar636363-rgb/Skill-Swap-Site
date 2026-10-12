@@ -88,11 +88,19 @@
       requests.innerHTML = html; conversations.innerHTML = html; return;
     }
     const relevant = state.swaps.filter(s => s.requester_id === state.id || s.recipient_id === state.id);
-    const incoming = relevant.filter(s => s.recipient_id === state.id);
-    requests.innerHTML = incoming.length ? incoming.map(s => {
-      const pending = s.status === "pending"; const status = s.status === "accepted" ? "Accepted" : s.status === "declined" ? "Declined" : "Awaiting reply";
-      return '<article class="request-item"><div class="request-person"><span class="avatar">' + escapeHTML(initials(s.requester_name)) + '</span><div><h3>' + escapeHTML(s.requester_name) + ' wants to learn</h3><p><span class="request-skill">' + escapeHTML(s.skill) + '</span> · sent ' + escapeHTML(new Date(s.created_at).toLocaleDateString()) + '</p></div></div><div class="request-actions">' + (pending ? '<button class="mini-button accept" data-respond="' + s.id + '" data-response="accepted">Accept ↗</button><button class="mini-button" data-respond="' + s.id + '" data-response="declined">Decline</button>' : '<span class="status-label ' + (s.status === "declined" ? "declined" : "") + '">' + status + '</span>') + (s.status === "accepted" ? '<button class="mini-button" data-open-chat="' + s.id + '">Open chat ↗</button>' : '') + '</div></article>';
-    }).join("") : '<div class="empty-state"><span class="empty-symbol">⇄</span><h3>Nothing on the table yet.</h3><p>When someone asks to learn from you, their request will show up here.</p><button class="button button-dark" data-view="discover">Find your people <span>↗</span></button></div>';
+    const visibleRequests = relevant.slice().sort((a, b) => Number(b.id) - Number(a.id));
+    requests.innerHTML = visibleRequests.length ? visibleRequests.map(s => {
+      const incoming = s.recipient_id === state.id;
+      const pending = s.status === "pending";
+      const person = incoming ? s.requester_name : s.recipient_name;
+      const heading = incoming ? (pending ? person + " wants to learn" : person + " sent a request") : (pending ? "You asked " + person : "You requested " + person);
+      const status = s.status === "accepted" ? "Accepted" : s.status === "declined" ? "Declined" : (incoming ? "Awaiting your reply" : "Awaiting reply");
+      const actions = incoming && pending
+        ? '<button class="mini-button accept" data-respond="' + s.id + '" data-response="accepted">Accept ↗</button><button class="mini-button" data-respond="' + s.id + '" data-response="declined">Decline</button>'
+        : '<span class="status-label ' + (s.status === "declined" ? "declined" : (pending ? "pending" : "")) + '">' + status + '</span>';
+      const chatAction = s.status === "accepted" ? '<button class="mini-button" data-open-chat="' + s.id + '">Open chat ↗</button>' : '';
+      return '<article class="request-item"><div class="request-person"><span class="avatar">' + escapeHTML(initials(person)) + '</span><div><h3>' + escapeHTML(heading) + '</h3><p><span class="request-skill">' + escapeHTML(s.skill) + '</span> · ' + (incoming ? 'INCOMING' : 'SENT BY YOU') + ' · ' + escapeHTML(new Date(s.created_at).toLocaleDateString()) + '</p></div></div><div class="request-actions">' + actions + chatAction + '</div></article>';
+    }).join("") : '<div class="empty-state"><span class="empty-symbol">⇄</span><h3>Nothing on the table yet.</h3><p>Your incoming and sent requests will show up here.</p><button class="button button-dark" data-view="discover">Find your people <span>↗</span></button></div>';
     const accepted = relevant.filter(s => s.status === "accepted");
     conversations.innerHTML = accepted.length ? accepted.map(s => '<button class="conversation-item" data-open-chat="' + s.id + '"><span class="avatar">' + escapeHTML(initials(otherName(s))) + '</span><span class="conversation-copy"><h3>' + escapeHTML(otherName(s)) + '</h3><p>Swap accepted · ' + escapeHTML(s.skill) + '</p></span><span class="conversation-skill">OPEN CHAT ↗</span></button>').join("") : '<div class="empty-state"><span class="empty-symbol">↗</span><h3>Your next conversation starts with a swap.</h3><p>Once a request is accepted, you’ll have a place to talk, share resources, and learn together.</p><button class="button button-dark" data-view="discover">Find your people <span>↗</span></button></div>';
   }
