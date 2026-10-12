@@ -125,7 +125,7 @@ body{background:var(--paper);font-size:15px;letter-spacing:-.1px}
 
 /* SkillSwap's tactile skill cube */
 .page-intro{align-items:center}
-.skill-cube-scene{--cube-size:clamp(104px,12vw,148px);position:relative;width:min(37%,290px);min-width:220px;height:258px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;perspective:900px;isolation:isolate;touch-action:pan-y}
+.skill-cube-scene{--cube-size:136px;--cube-half:68px;position:relative;width:min(37%,290px);min-width:220px;height:258px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;perspective:900px;isolation:isolate;touch-action:pan-y}
 .cube-caption{position:absolute;top:6px;left:0;right:0;display:flex;justify-content:space-between;align-items:center;font:9px var(--mono);letter-spacing:1px;color:var(--muted)}
 .cube-orbit-mark{display:grid;place-items:center;width:25px;height:25px;border:1px solid var(--line);color:var(--accent);font-size:15px}
 .skill-cube{position:relative;width:var(--cube-size);height:var(--cube-size);transform-style:preserve-3d;transform:rotateX(var(--cube-x,-23deg)) rotateY(var(--cube-y,-34deg));transition:transform 120ms ease-out;will-change:transform;z-index:2}
@@ -133,16 +133,16 @@ body{background:var(--paper);font-size:15px;letter-spacing:-.1px}
 .cube-face strong{font:800 clamp(16px,2vw,24px)/.9 var(--display);letter-spacing:-1.3px;overflow-wrap:anywhere}
 .cube-face-number{font:8px var(--mono);letter-spacing:.7px;opacity:.85}
 .cube-face-symbol{align-self:flex-end;font:30px/1 Georgia,serif}
-.cube-front{transform:translateZ(calc(var(--cube-size)/2));background:#d94e32}
-.cube-back{transform:rotateY(180deg) translateZ(calc(var(--cube-size)/2));background:#727a53}
-.cube-right{transform:rotateY(90deg) translateZ(calc(var(--cube-size)/2));background:#e4b94f;color:var(--ink)}
-.cube-left{transform:rotateY(-90deg) translateZ(calc(var(--cube-size)/2));background:#344c3c}
-.cube-top{transform:rotateX(90deg) translateZ(calc(var(--cube-size)/2));background:#e9e2d5;color:var(--ink)}
-.cube-bottom{transform:rotateX(-90deg) translateZ(calc(var(--cube-size)/2));background:#c9d0bd;color:var(--ink)}
+.cube-front{transform:translateZ(var(--cube-half));background:#d94e32}
+.cube-back{transform:rotateY(180deg) translateZ(var(--cube-half));background:#727a53}
+.cube-right{transform:rotateY(90deg) translateZ(var(--cube-half));background:#e4b94f;color:var(--ink)}
+.cube-left{transform:rotateY(-90deg) translateZ(var(--cube-half));background:#344c3c}
+.cube-top{transform:rotateX(90deg) translateZ(var(--cube-half));background:#e9e2d5;color:var(--ink)}
+.cube-bottom{transform:rotateX(-90deg) translateZ(var(--cube-half));background:#c9d0bd;color:var(--ink)}
 .cube-ground{position:absolute;width:70%;height:22px;bottom:39px;left:15%;background:rgba(37,40,35,.14);filter:blur(13px);border-radius:50%;transform:rotate(-8deg);z-index:-1}
 .cube-hint{position:absolute;bottom:0;left:0;right:0;margin:0;display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--muted);font:8px var(--mono);letter-spacing:.8px}
 .cube-hint span{color:var(--accent);font-size:15px}
 .skill-cube-scene:hover .cube-hint{color:var(--ink)}
-@media(max-width:900px){.skill-cube-scene{min-width:170px;width:32%;height:220px;--cube-size:clamp(90px,13vw,118px)}.cube-face{padding:10px}.cube-face strong{font-size:17px}.cube-face-number{font-size:7px}}
-@media(max-width:600px){.page-intro{align-items:flex-start}.skill-cube-scene{width:112px;min-width:112px;height:176px;margin-top:22px;--cube-size:78px}.cube-caption{top:-9px;left:auto;right:0;width:112px;justify-content:flex-end}.cube-caption>span:first-child{display:none}.cube-face{padding:7px}.cube-face strong{font-size:14px;letter-spacing:-.7px}.cube-face-number{font-size:6px}.cube-face-symbol{font-size:21px}.cube-hint{font-size:6px;letter-spacing:.25px}.cube-ground{bottom:29px}}
+@media(max-width:900px){.skill-cube-scene{min-width:170px;width:32%;height:220px;--cube-size:108px;--cube-half:54px}.cube-face{padding:10px}.cube-face strong{font-size:17px}.cube-face-number{font-size:7px}}
+@media(max-width:600px){.page-intro{align-items:flex-start}.skill-cube-scene{width:112px;min-width:112px;height:176px;margin-top:22px;--cube-size:78px;--cube-half:39px}.cube-caption{top:-9px;left:auto;right:0;width:112px;justify-content:flex-end}.cube-caption>span:first-child{display:none}.cube-face{padding:7px}.cube-face strong{font-size:14px;letter-spacing:-.7px}.cube-face-number{font-size:6px}.cube-face-symbol{font-size:21px}.cube-hint{font-size:6px;letter-spacing:.25px}.cube-ground{bottom:29px}}
 @media(prefers-reduced-motion:reduce){.skill-cube{transition:none;will-change:auto}}
