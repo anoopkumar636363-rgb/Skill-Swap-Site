@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import sqlite3
+from contextlib import closing
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal
@@ -40,7 +41,7 @@ def now() -> str:
 
 
 def init_db() -> None:
-    with connect() as db:
+    with closing(connect()) as db:
         db.executescript("""
         CREATE TABLE IF NOT EXISTS users (
             id TEXT PRIMARY KEY,
@@ -61,7 +62,6 @@ def init_db() -> None:
             skill TEXT NOT NULL,
             status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','accepted','declined')),
             created_at TEXT NOT NULL,
-            UNIQUE(requester_id, recipient_id, skill)
         );
         CREATE TABLE IF NOT EXISTS messages (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -74,6 +74,8 @@ def init_db() -> None:
         CREATE INDEX IF NOT EXISTS idx_swaps_requester ON swaps(requester_id, id);
         CREATE INDEX IF NOT EXISTS idx_swaps_recipient ON swaps(recipient_id, id);
         CREATE INDEX IF NOT EXISTS idx_messages_swap ON messages(swap_id, id);
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_pending_swap_unique
+            ON swaps(requester_id, recipient_id, skill) WHERE status='pending';
         """)
         db.commit()
 
@@ -148,7 +150,7 @@ def health():
 
 @app.get("/api/health/database")
 def database_health():
-    with connect() as db:
+    with closing(connect()) as db:
         db.execute("SELECT 1").fetchone()
     return {"ok": True, "database": "connected"}
 
@@ -158,7 +160,7 @@ def save_user(payload: UserIn):
     name = " ".join(payload.name.strip().split())
     if not name:
         raise HTTPException(400, "Please enter a name.")
-    with connect() as db:
+    with closing(connect()) as db:
         db.execute(
             "INSERT INTO users(id, name, created_at) VALUES(?,?,?) "
             "ON CONFLICT(id) DO UPDATE SET name=excluded.name",
@@ -170,7 +172,7 @@ def save_user(payload: UserIn):
 
 @app.get("/api/users/{user_id}")
 def get_user(user_id: str):
-    with connect() as db:
+    with closing(connect()) as db:
         user = public_user(db, user_id)
         if not user:
             raise HTTPException(404, "Profile not found.")
@@ -179,7 +181,7 @@ def get_user(user_id: str):
 
 @app.put("/api/users/{user_id}/skills")
 def save_skills(user_id: str, payload: SkillsIn):
-    with connect() as db:
+    with closing(connect()) as db:
         if not db.execute("SELECT id FROM users WHERE id=?", (user_id,)).fetchone():
             raise HTTPException(404, "Profile not found. Save your name first.")
         db.execute("DELETE FROM user_skills WHERE user_id=?", (user_id,))
@@ -194,7 +196,7 @@ def save_skills(user_id: str, payload: SkillsIn):
 
 @app.get("/api/users/{user_id}/matches")
 def matches(user_id: str):
-    with connect() as db:
+    with closing(connect()) as db:
         me = public_user(db, user_id)
         if not me:
             raise HTTPException(404, "Profile not found.")
@@ -224,7 +226,7 @@ def create_swap(payload: SwapIn):
         raise HTTPException(400, "Choose a skill to request.")
     if payload.requester_id == payload.recipient_id:
         raise HTTPException(400, "You cannot request a swap with yourself.")
-    with connect() as db:
+    with closing(connect()) as db:
         requester = public_user(db, payload.requester_id)
         recipient = public_user(db, payload.recipient_id)
         if not requester or not recipient:
@@ -247,7 +249,7 @@ def create_swap(payload: SwapIn):
 
 @app.get("/api/users/{user_id}/swaps")
 def list_swaps(user_id: str):
-    with connect() as db:
+    with closing(connect()) as db:
         if not db.execute("SELECT id FROM users WHERE id=?", (user_id,)).fetchone():
             raise HTTPException(404, "Profile not found.")
         rows = db.execute(
@@ -262,7 +264,7 @@ def list_swaps(user_id: str):
 
 @app.post("/api/swaps/{swap_id}/respond")
 def respond(swap_id: int, payload: RespondIn):
-    with connect() as db:
+    with closing(connect()) as db:
         swap = db.execute("SELECT * FROM swaps WHERE id=?", (swap_id,)).fetchone()
         if not swap:
             raise HTTPException(404, "Swap request not found.")
@@ -288,7 +290,7 @@ def authorized_swap(db: sqlite3.Connection, swap_id: int, user_id: str) -> sqlit
 
 @app.get("/api/swaps/{swap_id}/messages")
 def get_messages(swap_id: int, user_id: str = Query(min_length=8, max_length=80)):
-    with connect() as db:
+    with closing(connect()) as db:
         authorized_swap(db, swap_id, user_id)
         rows = db.execute(
             "SELECT m.id, m.swap_id, m.sender_id, u.name AS sender_name, m.body, m.created_at "
@@ -304,7 +306,7 @@ def send_message(swap_id: int, payload: MessageIn):
     body = payload.body.strip()
     if not body:
         raise HTTPException(400, "Message cannot be empty.")
-    with connect() as db:
+    with closing(connect()) as db:
         authorized_swap(db, swap_id, payload.user_id)
         db.execute(
             "INSERT INTO messages(swap_id, sender_id, body, created_at) VALUES(?,?,?,?)",
