@@ -22,4 +22,4 @@ jobs:
       - name: Run regression tests
         env:
           SKILLSWAP_DB: ${{ runner.temp }}/skillswap-test.sqlite3
-        run: pytest -q
+        run: python -m pytest -q
