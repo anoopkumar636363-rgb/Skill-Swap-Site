@@ -19,6 +19,8 @@ jobs:
           cache: pip
       - name: Install dependencies
         run: pip install -r requirements.txt
+      - name: Check frontend JavaScript syntax
+        run: node --check frontend/app.js
       - name: Run regression tests
         env:
           SKILLSWAP_DB: ${{ runner.temp }}/skillswap-test.sqlite3
