@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f0e8">
+  <meta name="description" content="Trade what you know for something new to learn.">
+  <title>SkillSwap — trade what you know</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <div class="app-frame">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="SkillSwap home" data-view="discover"><span class="brand-mark" aria-hidden="true"><span></span><span></span></span><span>skill<span class="brand-light">swap</span><sup>®</sup></span></a>
+      <div class="side-label">YOUR WORKSPACE</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-view="discover"><span class="nav-icon">⌕</span><span>Find your people</span><span class="nav-arrow">↗</span></button>
+        <button class="nav-link" data-view="requests"><span class="nav-icon">⇄</span><span>Swap requests</span><span class="nav-count hidden" id="request-count">0</span></button>
+        <button class="nav-link" data-view="messages"><span class="nav-icon">↗</span><span>Conversations</span></button>
+        <button class="nav-link" data-view="profile"><span class="nav-icon">◎</span><span>Your skills</span></button>
+      </nav>
+      <div class="sidebar-note"><span class="note-index">FIELD NOTE 001</span><p>Everyone knows<br>something you don't.</p><span class="note-scribble" aria-hidden="true">↗</span></div>
+      <div class="side-bottom"><span class="online-dot"></span><span>Small skills. Big exchanges.</span></div>
+    </aside>
+    <main class="main-area">
+      <header class="topbar"><button class="mobile-menu" id="mobile-menu" aria-label="Open navigation">☰</button><div class="breadcrumb"><span>SKILLS EXCHANGE</span><span class="breadcrumb-slash">/</span><span id="breadcrumb-current">DISCOVER</span></div><button class="profile-chip" id="profile-chip"><span class="avatar avatar-small" id="top-avatar">?</span><span id="top-name">Your profile</span><span class="chip-caret">⌄</span></button></header>
+      <div id="notice" class="notice hidden" role="status" aria-live="polite"></div>
+      <section class="view active" id="view-discover">
+        <div class="page-intro"><div><div class="eyebrow"><span class="eyebrow-line"></span> A COMMUNITY OF CURIOSITY</div><h1>Know a little.<br><em>Learn a lot.</em></h1><p class="intro-copy">Your next favourite skill might come from the person sitting two tabs away. Find someone who knows what you want to know.</p></div><div class="issue-stamp"><span>ISSUE</span><strong>NO. 01</strong><span>THE EXCHANGE</span><div class="stamp-star">✳</div></div></div>
+        <div class="exchange-strip"><div class="exchange-symbol" aria-hidden="true">↔</div><div><span class="strip-label">THE IDEA IS SIMPLE</span><p>Offer what you know. Ask for what you don't.</p></div><span class="strip-end">NO MONEY. JUST KNOW-HOW.</span></div>
+        <div class="section-heading"><div><span class="section-kicker">01 / THE PEOPLE</span><h2>Find your match<span class="period">.</span></h2></div><div class="result-meta"><span class="live-dot"></span><span id="match-count">Finding your people</span></div></div>
+        <div class="search-row"><label class="search-box"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search a skill — illustration, Python, guitar…" autocomplete="off"><kbd>/</kbd></label><button class="filter-button" id="clear-search">Clear filters <span>↗</span></button></div>
+        <div id="skill-filters" class="skill-filters" aria-label="Your learning goals"></div>
+        <div id="matches" class="people-grid"><div class="empty-state"><span class="empty-symbol">↗</span><h3>Start with your curiosity.</h3><p>Add a few skills you want to learn in Your skills, then we’ll find people who can teach them.</p><button class="button button-dark" data-view="profile">Set up your skills <span>↗</span></button></div></div>
+        <div class="bottom-note"><span>GOOD THINGS ARE LEARNED TOGETHER.</span><span>SKILLSWAP / 001</span></div>
+      </section>
+      <section class="view" id="view-profile"><div class="page-header compact-header"><div class="eyebrow"><span class="eyebrow-line"></span> YOUR CORNER OF THE WORLD</div><h1>Your skills<span class="period">.</span></h1><p class="intro-copy">A little about you, and a little about what you’re curious about.</p></div>
+        <form id="profile-form" class="profile-form"><div class="form-section"><div class="form-number">01</div><div class="form-content"><label class="field-label" for="display-name">WHAT SHOULD WE CALL YOU?</label><input class="text-input" id="display-name" maxlength="48" placeholder="Your name or nickname" required><p class="field-help">No password or account needed. Your name is just a label for this demo.</p></div></div>
+          <div class="form-section"><div class="form-number">02</div><div class="form-content"><label class="field-label" for="teach-skills">WHAT CAN YOU SHARE?</label><p class="field-description">Things you can teach, explain, or help someone get started with.</p><textarea class="text-input skill-textarea" id="teach-skills" rows="3" placeholder="e.g. Procreate, conversational English, baking sourdough"></textarea><p class="field-help">Separate skills with commas. A beginner can teach a beginner, too.</p></div></div>
+          <div class="form-section"><div class="form-number">03</div><div class="form-content"><label class="field-label" for="learn-skills">WHAT WOULD YOU LOVE TO LEARN?</label><p class="field-description">Be curious. You don’t have to be good at it yet.</p><textarea class="text-input skill-textarea" id="learn-skills" rows="3" placeholder="e.g. Python, portrait photography, guitar"></textarea><p class="field-help">We’ll find people who offer these skills.</p></div></div>
+          <div class="form-actions"><span id="profile-status" class="field-help">Your skills are saved to the shared project database.</span><button class="button button-dark" type="submit">Save your corner <span>↗</span></button></div></form></section>
+      <section class="view" id="view-requests"><div class="page-header compact-header"><div class="eyebrow"><span class="eyebrow-line"></span> OPEN LOOPS</div><h1>Swap requests<span class="period">.</span></h1><p class="intro-copy">Every good exchange starts with a hello.</p></div><div id="requests-list" class="stack-list"><div class="empty-state"><span class="empty-symbol">⇄</span><h3>Nothing on the table yet.</h3><p>When someone asks to learn from you, their request will show up here.</p></div></div></section>
+      <section class="view" id="view-messages"><div class="page-header compact-header"><div class="eyebrow"><span class="eyebrow-line"></span> THE GOOD PART</div><h1>Conversations<span class="period">.</span></h1><p class="intro-copy">Questions, notes, resources, and the occasional “wait, I get it now.”</p></div><div id="conversations-list" class="stack-list"><div class="empty-state"><span class="empty-symbol">↗</span><h3>Your next conversation starts with a swap.</h3><p>Accept a request to open a space to chat.</p></div></div></section>
+      <section class="view" id="view-chat"><div class="chat-header"><button class="back-button" id="back-to-messages">← Back</button><div class="chat-person"><span class="avatar" id="chat-avatar">?</span><div><h2 id="chat-title">Conversation</h2><p id="chat-subtitle">Your skill exchange</p></div></div><span class="chat-status"><span class="live-dot"></span> SWAP ACCEPTED</span></div>
+        <div class="chat-context"><span class="context-label">ON THE TABLE</span><span id="chat-skill">Skill exchange</span><span class="context-arrow">↔</span><span class="context-label">TAKE IT AT YOUR OWN PACE</span></div><div id="chat-messages" class="chat-messages" aria-live="polite"><div class="chat-start-note">A new exchange. Say hello.</div></div>
+        <form id="message-form" class="message-form"><label class="sr-only" for="message-input">Write a message</label><textarea id="message-input" rows="1" maxlength="2000" placeholder="Write a message…"></textarea><button type="submit" class="send-button" aria-label="Send message">Send <span>↗</span></button></form><p class="chat-footnote">A good place to start: ask what they'd like to learn first.</p></section>
+      <footer class="mobile-footer"><span>SKILLSWAP © 2026</span><span>MADE FOR THE CURIOUS <span class="footer-star">✳</span></span></footer>
+    </main>
+  </div>
+  <dialog id="request-dialog" class="request-dialog"><form method="dialog" class="dialog-close-row"><button class="icon-button" aria-label="Close dialog">×</button></form><div class="eyebrow"><span class="eyebrow-line"></span> MAKE THE FIRST MOVE</div><h2>Ask to learn<br><em>something new.</em></h2><p id="request-copy" class="dialog-copy">Send a friendly request to start an exchange.</p><label for="request-skill" class="field-label">WHAT DO YOU WANT TO LEARN?</label><select id="request-skill" class="text-input"></select><div class="dialog-actions"><button id="cancel-request" class="button button-quiet" type="button">Not yet</button><button id="send-request" class="button button-dark" type="button">Send request <span>↗</span></button></div></dialog>
+</body>
+</html>
