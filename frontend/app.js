@@ -7,6 +7,32 @@
   let noticeTimer;
   let pollTimer;
 
+  function initSkillCube() {
+    const scene = $("#skill-cube-scene");
+    const cube = $("#skill-cube");
+    if (!scene || !cube) return;
+    let frame = 0;
+    scene.addEventListener("pointermove", event => {
+      if (event.pointerType === "touch") return;
+      const rect = scene.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        cube.style.setProperty("--cube-y", (-34 + x * 48) + "deg");
+        cube.style.setProperty("--cube-x", (-23 - y * 34) + "deg");
+      });
+    });
+    scene.addEventListener("pointerleave", () => {
+      cancelAnimationFrame(frame);
+      cube.style.setProperty("--cube-x", "-23deg");
+      cube.style.setProperty("--cube-y", "-34deg");
+    });
+    scene.addEventListener("focus", () => {
+      cube.style.setProperty("--cube-x", "-18deg");
+      cube.style.setProperty("--cube-y", "24deg");
+    }, true);
+  }
   function makeId() { return (crypto.randomUUID ? crypto.randomUUID() : "person-" + Math.random().toString(36).slice(2) + Date.now().toString(36)); }
   function escapeHTML(value) { return String(value ?? "").replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[char])); }
   function initials(name) { return (name || "?").trim().split(/\s+/).slice(0, 2).map(part => part[0] || "").join("").toUpperCase() || "?"; }
@@ -245,5 +271,6 @@
     if (event.key === "Escape") $("#sidebar").classList.remove("open");
   });
   window.addEventListener("beforeunload", () => clearInterval(pollTimer));
+  initSkillCube();
   boot();
 })();
