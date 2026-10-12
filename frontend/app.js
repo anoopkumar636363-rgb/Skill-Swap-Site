@@ -229,7 +229,8 @@
     if (chatButton) { await openChat(Number(chatButton.dataset.openChat)); return; }
   });
   $$(".nav-link").forEach(link => link.addEventListener("click", () => showView(link.dataset.view)));
-  $("#profile-form").addEventListener("submit", saveProfile);\n  $("#welcome-form").addEventListener("submit", saveWelcomeName);
+  $("#profile-form").addEventListener("submit", saveProfile);
+  $("#welcome-form").addEventListener("submit", saveWelcomeName);
   $("#message-form").addEventListener("submit", sendMessage);
   $("#search-input").addEventListener("input", event => { state.filter = event.target.value; renderMatches(); });
   $("#clear-search").addEventListener("click", () => { state.filter = ""; state.selectedSkill = ""; $("#search-input").value = ""; renderFilters(); renderMatches(); });
