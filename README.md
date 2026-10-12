@@ -137,3 +137,56 @@ Skill-specific AI learning assistants may be explored later for topics such as p
 Repository: https://github.com/anoopkumar636363-rgb/Skill-Swap-Site
 
 Work directly on `main`, as agreed. Modify only this repository, inspect files before overwriting them, and do not add unrelated features.
+
+
+---
+
+## 14. Current implementation
+
+The first working implementation is now in the repository:
+
+- `frontend/index.html`, `frontend/style.css`, `frontend/app.js` — responsive editorial interface, profile editor, matching, request actions, and polling chat.
+- `backend/main.py` — FastAPI API and SQLite persistence.
+- `tests/test_api.py` — regression tests for matching, request acceptance, chat access, and duplicate pending requests.
+- `.github/workflows/tests.yml` — runs the test suite on pushes and pull requests to `main`.
+
+The visual direction currently implemented is **warm editorial**: paper-like neutrals, ink-dark navigation, restrained vermilion accents, expressive typography, fine rules, and asymmetric details. It avoids gradients, glassmorphism, and a generic SaaS card grid. This is the first design pass and should be checked in a real browser at desktop and mobile sizes before calling the UI finished.
+
+## 15. Run locally
+
+Use Python 3.11 or newer.
+
+```bash
+python -m venv .venv
+```
+
+Activate the environment:
+
+- Windows PowerShell: `.venv\\Scripts\\Activate.ps1`
+- macOS/Linux: `source .venv/bin/activate`
+
+Install dependencies and start the server from the repository root:
+
+```bash
+python -m pip install -r requirements.txt
+uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Open [http://127.0.0.1:8000](http://127.0.0.1:8000). The API health check is at [http://127.0.0.1:8000/api/health](http://127.0.0.1:8000/api/health).
+
+For another device on the same Wi-Fi, find the computer's local IPv4 address and open `http://YOUR-COMPUTER-IP:8000` on that device. Allow Python through the local firewall if prompted. This does not publish the app to the public internet.
+
+The SQLite file `skillswap.db` is created automatically in the repository root. Keep it private and do not commit it.
+
+## 16. Run regression tests
+
+```bash
+python -m pip install -r requirements.txt
+pytest -q
+```
+
+GitHub Actions also runs these tests on pushes and pull requests to `main`.
+
+## 17. Important demo limitation
+
+This MVP deliberately has no login or authentication. A browser-generated participant ID is a convenience, **not proof of identity or a security boundary**. Anyone who can access the demo may be able to impersonate a participant if they obtain that participant's ID. Do not use real sensitive information or expose this unauthenticated demo publicly. Add real authentication and authorization before a public launch.
