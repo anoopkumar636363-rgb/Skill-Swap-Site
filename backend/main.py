@@ -61,7 +61,7 @@ def init_db() -> None:
             recipient_id TEXT NOT NULL REFERENCES users(id),
             skill TEXT NOT NULL,
             status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','accepted','declined')),
-            created_at TEXT NOT NULL,
+            created_at TEXT NOT NULL
         );
         CREATE TABLE IF NOT EXISTS messages (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
