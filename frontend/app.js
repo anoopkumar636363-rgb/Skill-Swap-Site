@@ -39,6 +39,39 @@
   }
   function fillProfile() { $("#display-name").value = state.name; $("#teach-skills").value = state.teach.join(", "); $("#learn-skills").value = state.learn.join(", "); }
   function updateIdentity() { $("#top-name").textContent = state.name || "Your profile"; $("#top-avatar").textContent = initials(state.name); }
+  function openWelcome() {
+    if (state.name) return;
+    $("#welcome-name").value = "";
+    if (!$("#welcome-dialog").open) $("#welcome-dialog").showModal();
+    setTimeout(() => $("#welcome-name").focus(), 60);
+  }
+  async function saveWelcomeName(event) {
+    event.preventDefault();
+    const name = $("#welcome-name").value.trim();
+    if (!name) return;
+    const button = $("#welcome-form button[type=submit]");
+    button.disabled = true;
+    button.textContent = "Just a moment…";
+    try {
+      const profile = await api("/api/users", { method:"POST", body:JSON.stringify({ id:state.id, name }) });
+      state.name = profile.name;
+      state.teach = profile.teach || [];
+      state.learn = profile.learn || [];
+      storage.setItem("skillswap_name", state.name);
+      updateIdentity();
+      $("#welcome-dialog").close();
+      fillProfile();
+      await loadMatches();
+      await loadSwaps();
+      notify("Welcome, " + state.name + ". Add your skills whenever you're ready.");
+    } catch (error) {
+      $("#welcome-error").textContent = error.message;
+      $("#welcome-error").classList.remove("hidden");
+    } finally {
+      button.disabled = false;
+      button.innerHTML = 'Let\'s get started <span>↗</span>';
+    }
+  }
   function skillTags(skills, matching = []) {
     if (!skills.length) return '<span class="skill-tag">Not listed yet</span>';
     return skills.map(skill => '<span class="skill-tag ' + (matching.some(s => s.toLocaleLowerCase() === skill.toLocaleLowerCase()) ? "match" : "") + '">' + escapeHTML(skill) + '</span>').join("");
@@ -196,7 +229,7 @@
     if (chatButton) { await openChat(Number(chatButton.dataset.openChat)); return; }
   });
   $$(".nav-link").forEach(link => link.addEventListener("click", () => showView(link.dataset.view)));
-  $("#profile-form").addEventListener("submit", saveProfile);
+  $("#profile-form").addEventListener("submit", saveProfile);\n  $("#welcome-form").addEventListener("submit", saveWelcomeName);
   $("#message-form").addEventListener("submit", sendMessage);
   $("#search-input").addEventListener("input", event => { state.filter = event.target.value; renderMatches(); });
   $("#clear-search").addEventListener("click", () => { state.filter = ""; state.selectedSkill = ""; $("#search-input").value = ""; renderFilters(); renderMatches(); });
