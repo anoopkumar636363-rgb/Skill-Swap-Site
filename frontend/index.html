@@ -30,8 +30,8 @@
       <header class="topbar"><button class="mobile-menu" id="mobile-menu" aria-label="Open navigation">☰</button><div class="breadcrumb"><span>SKILLS EXCHANGE</span><span class="breadcrumb-slash">/</span><span id="breadcrumb-current">DISCOVER</span></div><button class="profile-chip" id="profile-chip"><span class="avatar avatar-small" id="top-avatar">?</span><span id="top-name">Your profile</span><span class="chip-caret">⌄</span></button></header>
       <div id="notice" class="notice hidden" role="status" aria-live="polite"></div>
       <section class="view active" id="view-discover">
-        <div class="page-intro"><div><div class="eyebrow"><span class="eyebrow-line"></span> A COMMUNITY OF CURIOSITY</div><h1>Know a little.<br><em>Learn a lot.</em></h1><p class="intro-copy">Your next favourite skill might come from the person sitting two tabs away. Find someone who knows what you want to know.</p></div><div class="issue-stamp"><span>ISSUE</span><strong>NO. 01</strong><span>THE EXCHANGE</span><div class="stamp-star">✳</div></div></div>
-        <div class="exchange-strip"><div class="exchange-symbol" aria-hidden="true">↔</div><div><span class="strip-label">THE IDEA IS SIMPLE</span><p>Offer what you know. Ask for what you don't.</p></div><span class="strip-end">NO MONEY. JUST KNOW-HOW.</span></div>
+        <div class="page-intro"><div><div class="eyebrow"><span class="eyebrow-line"></span> A COMMUNITY OF CURIOSITY</div><h1>Good at something?<br><em>Pass it on.</em></h1><p class="intro-copy">A place to trade know-how, meet curious people, and learn something you couldn’t figure out alone.</p></div><div class="issue-stamp"><span>ISSUE</span><strong>NO. 01</strong><span>THE EXCHANGE</span><div class="stamp-star">✳</div></div></div>
+        <div class="exchange-strip"><div class="exchange-symbol" aria-hidden="true">↔</div><div><span class="strip-label">THE ONLY RULE</span><p>Bring a skill. Leave with a new one.</p></div><span class="strip-end">NO MONEY. JUST KNOW-HOW.</span></div>
         <div class="section-heading"><div><span class="section-kicker">01 / THE PEOPLE</span><h2>Find your match<span class="period">.</span></h2></div><div class="result-meta"><span class="live-dot"></span><span id="match-count">Finding your people</span></div></div>
         <div class="search-row"><label class="search-box"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search a skill — illustration, Python, guitar…" autocomplete="off"><kbd>/</kbd></label><button class="filter-button" id="clear-search">Clear filters <span>↗</span></button></div>
         <div id="skill-filters" class="skill-filters" aria-label="Your learning goals"></div>
@@ -51,6 +51,12 @@
       <footer class="mobile-footer"><span>SKILLSWAP © 2026</span><span>MADE FOR THE CURIOUS <span class="footer-star">✳</span></span></footer>
     </main>
   </div>
+  <dialog id="welcome-dialog" class="welcome-dialog" aria-labelledby="welcome-title">
+    <div class="welcome-art" aria-hidden="true"><span class="welcome-sun"></span><span class="welcome-line welcome-line-one"></span><span class="welcome-line welcome-line-two"></span><span class="welcome-note">GOOD TO<br>MEET YOU.</span><span class="welcome-doodle">↗</span></div>
+    <div class="welcome-content"><span class="welcome-kicker">SKILLSWAP / COMMUNITY BOARD</span><h2 id="welcome-title">First things<br><em>first.</em></h2><p>What should we call you? Pick a name and come on in. You can add your skills next.</p>
+      <form id="welcome-form"><label for="welcome-name" class="field-label">YOUR NAME OR NICKNAME</label><input id="welcome-name" class="text-input welcome-input" maxlength="48" placeholder="e.g. Alex" autocomplete="nickname" required><p class="welcome-small">No password, no fuss. Just a name to get started.</p><button class="button button-dark welcome-submit" type="submit">Let's get started <span>↗</span></button></form>
+    </div>
+  </dialog>
   <dialog id="request-dialog" class="request-dialog"><form method="dialog" class="dialog-close-row"><button class="icon-button" aria-label="Close dialog">×</button></form><div class="eyebrow"><span class="eyebrow-line"></span> MAKE THE FIRST MOVE</div><h2>Ask to learn<br><em>something new.</em></h2><p id="request-copy" class="dialog-copy">Send a friendly request to start an exchange.</p><label for="request-skill" class="field-label">WHAT DO YOU WANT TO LEARN?</label><select id="request-skill" class="text-input"></select><div class="dialog-actions"><button id="cancel-request" class="button button-quiet" type="button">Not yet</button><button id="send-request" class="button button-dark" type="button">Send request <span>↗</span></button></div></dialog>
 </body>
 </html>
